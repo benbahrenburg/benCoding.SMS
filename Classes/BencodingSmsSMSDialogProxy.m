@@ -13,20 +13,21 @@
 @synthesize canSendText;
 -(id)init
 {
-    showAnimated=YES;
-    //Set a property so that we know if we can send a text message
-    canSendText=NUMBOOL([MFMessageComposeViewController canSendText]);
+    if (self = [super init])
+    {
+        showAnimated=YES;
+        //Set a property so that we know if we can send a text message
+        canSendText=NUMBOOL([MFMessageComposeViewController canSendText]);
     
-	// This is the designated initializer method and will always be called when the proxy is created.
-    return [super init];    
+    }
+    
+    return self;  
 }
 
 
 -(void)open:(id)args
 {    
-    //Set default in case nothing is provided
-    int style=-1; 
-    showAnimated=YES;
+    showAnimated=YES; //Force reset in case dev wants to toggle
     
     if([MFMessageComposeViewController canSendText]==NO)
     {
@@ -54,7 +55,6 @@
         //Get the user's animated option if provided
         ENSURE_SINGLE_ARG(args,NSDictionary);
         showAnimated = [TiUtils boolValue:@"animated" properties:args def:YES];
-        style = [TiUtils intValue:@"modalTransitionStyle" properties:args def:-1];   
     }
     
 	Class arrayClass = [NSArray class];
@@ -80,13 +80,7 @@
     smsController.body = message;        
     smsController.recipients = toArray;    
     smsController.messageComposeDelegate = self;
-    //If no style provided, we skip this
-    if (style!=-1)
-    {    
-        //We apply the style        
-        [smsController setModalTransitionStyle:style];        
-    }     
-    
+      
     //We call into core TiApp module this handles the controller magic for us        
     [[TiApp app] showModalController:smsController animated:showAnimated];        
     
