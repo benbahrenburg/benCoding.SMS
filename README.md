@@ -25,7 +25,6 @@ For detailed documentation please reference this project's documentation folder.
 A code "How To" example is provided in the app.js located in the project's example folder.
 
 <h2>Properties</h2>
-<hr />
 
 This module provides access to most of the native MFMessageComposeViewController's functionality.
 
@@ -71,7 +70,6 @@ if(!sms.canSendText){
 </code></pre>
 
 <h2>Methods</h2>
-<hr />
 
 <h3>setBarColor</h3>
 Sets the barColor property for the SMS Dialog, see below for an example on how to use this.
@@ -106,7 +104,7 @@ sms.open({
 </code></pre>
 
 <h2>Events</h2>
-<hr />
+
 <h3>completed</h3>
 This event is fired when the user presses the cancel button on the SMS Dialog
 
@@ -156,8 +154,6 @@ You can update the barColor by setting the barColor property when creating the S
 <h3>Is there an Android version?</h3>
 You can do this using activities on Android without the need of a module.  This module is an iOS only wrapper around the native [MFMessageComposeViewController](https://developer.apple.com/library/ios/#documentation/MessageUI/Reference/MFMessageComposeViewController_class/Reference/Reference.html) component. 
 
-<hr />
-
 <h2>Licensing & Support</h2>
 
 This project is licensed under the OSI approved Apache Public License (version 2). For details please see the license associated with each project.
@@ -165,7 +161,7 @@ This project is licensed under the OSI approved Apache Public License (version 2
 Developed by [Ben Bahrenburg](http://bahrenburgs.com) available on twitter [@benCoding](http://twitter.com/benCoding)
 
 <h2>Learn More</h2>
-<hr />
+
 <h3>Twitter</h3>
 
 Please consider following the [@benCoding Twitter](http://www.twitter.com/benCoding) for updates 
