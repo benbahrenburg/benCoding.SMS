@@ -1,0 +1,311 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>benCoding.SMS Module</title>
+<style type="text/css">
+.auto-style1 {
+	margin-left: 40px;
+}
+.auto-style2 {
+	margin-left: 80px;
+}
+.auto-style6 {
+	border: 1px solid #000000;
+	background-color: #E8E8E8;
+	font-size: large;
+}
+.auto-style7 {
+	border: 1px solid #000000;
+}
+.auto-style8 {
+	margin-left: 120px;
+}
+.auto-style9 {
+	margin-left: 160px;
+}
+.auto-style10 {
+	border: 1px solid #000000;
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<h1 class="auto-style1">benCoding.SMS Module</h1>
+<hr />
+<h2 class="auto-style1">Description</h2>
+<p class="auto-style2">The benCoding.SMS module makes it easy to add SMS 
+functionality into your iOS Titanium apps. We unleash the power of Apple&#39;s 
+native Apple SMS component
+<a href="https://developer.apple.com/library/ios/#documentation/MessageUI/Reference/MFMessageComposeViewController_class/Reference/Reference.html">
+MFMessageComposeViewController</a> to Titanium with an API fashioned after the 
+Titanium EmailDialog to make it familiar to use.</p>
+<h2 class="auto-style1">Before You Start</h2>
+<ul class="auto-style2">
+	<li>This module requires iOS 4.2 or greater
+	<li>This is an iOS module designed to work with Titanium SDK 1.8.1 or 
+	greater.</li>
+	<li>Before using this module you first need to install the package. If you 
+	need instructions on how to install a 3rd party module please read
+	<a href="https://wiki.appcelerator.org/display/guides/Configuring+Apps+to+Use+Modules">
+	this installation guide</a>.</li>
+	<li>If you would like access to the source code, please visit us on Github at <a href="https://github.com/benbahrenburg/benCoding.SMS">https://github.com/benbahrenburg/benCoding.SMS</a>.</li>
+</ul>
+<h2 class="auto-style1">Accessing the benCoding.SMS Module</h2>
+<p class="auto-style2">To access this module from JavaScript, you would do the following:
+<div style="border-width: thin; border-style: solid; background-color: #E8E8E8;" class="auto-style8">
+	<p class="auto-style1"><strong>var sms = require('bencoding.SMS').createSMSDialog();</strong></p>
+</div>
+
+
+<h2 class="auto-style1">Properties</h2>
+<table style="width: 92%" class="auto-style2">
+	<tr>
+		<td style="width: 119px" class="auto-style6"><strong>Property Name</strong></td>
+		<td style="width: 87px" class="auto-style6">Data Type</td>
+		<td style="width: 296px" class="auto-style6"><strong>Description</strong></td>
+	</tr>
+	<tr>
+		<td style="width: 119px; height: 23px" class="auto-style7"><strong>
+		canSendText</strong></td>
+		<td style="width: 87px; height: 23px" class="auto-style10">Boolean</td>
+		<td class="auto-style7" style="width: 296px; height: 23px">Returns a 
+		boolean whether the device has the ability to send Text Messages.&nbsp; 
+		Please keep in mind this value will always be false when running on the 
+		simulator. (<strong>Read Only)</strong></td>
+	</tr>
+	<tr>
+		<td style="width: 119px; height: 23px" class="auto-style7"><strong>
+		messageBody</strong></td>
+		<td style="width: 87px; height: 23px" class="auto-style10">String</td>
+		<td class="auto-style7" style="width: 296px; height: 23px">The SMS 
+		message</td>
+	</tr>
+	<tr>
+		<td style="width: 119px; height: 23px" class="auto-style7"><strong>
+		toRecipients</strong></td>
+		<td style="width: 87px; height: 23px" class="auto-style10">Array</td>
+		<td class="auto-style7" style="width: 296px; height: 23px">An array of 
+		SMS recipients ie phone numbers</td>
+	</tr>
+	
+	<tr>
+		<td style="width: 119px; height: 23px" class="auto-style7"><strong>
+		barColor</strong></td>
+		<td style="width: 87px; height: 23px" class="auto-style10">String</td>
+		<td class="auto-style7" style="width: 296px; height: 23px">The bar color 
+		of the email dialog window when opened </td>
+	</tr>
+	
+</table>
+<h3 class="auto-style2">Using the Properties</h3>
+<p class="auto-style8">The below example shows how to use all of the SMS Dialog properties.</p>
+<div style="border-width: thin; border-style: solid; background-color: #E8E8E8;" class="auto-style9">
+	<p class="auto-style1">
+	<strong>var sms = require(&#39;bencoding.SMS&#39;).createSMSDialog({<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+	barColor:&#39;#336699&#39;, //set the SMS Dialog barColor<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+	messageBody:&quot;Appcelerator Titanium Rocks!&quot;, //Set SMS Message<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+	toRecipients:[{&quot;555-555-5555&quot;},{&quot;444-444-4444&quot;}] //Who we are the SMS 
+	sending to<br />
+	});</strong></p>
+</div>
+
+<h3 class="auto-style2">Using the canSendText Property</h3>
+<p class="auto-style8">This method returns a boolean indicator on whether or not 
+the device has the ability to send Text Messages.&nbsp; You can use this 
+property to avoid prompting your users to perform a task that is not supported.&nbsp; 
+Please keep in mind this value will always be false when running on the 
+simulator.</p>
+<p class="auto-style8">The below sample shows how you can check if this feature is supported.</p>
+<div style="border-width: thin; border-style: solid; background-color: #E8E8E8;" class="auto-style9">
+	<p class="auto-style1"><strong>
+	Ti.API.info("Is This Feature Supported? => " + sms.canSendText);
+	<br />
+	</strong></p>
+	<p class="auto-style1"><strong>
+	//This is an example of how to check if the device can send Text Messages
+	<br />
+	if(!sms.canSendText){
+	<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+var noSupport = Ti.UI.createAlertDialog({
+    <br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; title:'Not Supported',
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; message:"This device doesn't support sending text messages" 
+
+}).show();
+
+ <br />
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ return;
+ <br />
+} </strong></p>
+</div>
+
+<h2 class="auto-style1">Methods</h2>
+<table style="width: 92%" class="auto-style2">
+	<tr>
+		<td style="width: 116px" class="auto-style6"><strong>Method Name</strong></td>
+		<td style="width: 296px" class="auto-style6"><strong>Description</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 116px"><strong>setBarColor</strong></td>
+		<td class="auto-style7" style="width: 296px">Sets the barColor property 
+		for the SMS Dialog, see below for an example on how to use this.</td>
+	</tr>	
+	<tr>
+		<td class="auto-style7" style="width: 116px"><strong>setToRecipients</strong></td>
+		<td class="auto-style7" style="width: 296px">Sets the toRecipients 
+		property with an array ( ie an array of phone numbers),see below for an 
+		example on how to use this.</td>
+	</tr>	
+	<tr>
+		<td class="auto-style7" style="width: 116px"><strong>setMessageBody</strong></td>
+		<td class="auto-style7" style="width: 296px">Sets the messageBody 
+		property with a string.  This is used to set the message shown in the SMSDialog,see below for an 
+		example on how to use this.</td>
+	</tr>			
+	<tr>
+		<td class="auto-style7" style="width: 116px"><strong>open</strong></td>
+		<td class="auto-style7" style="width: 296px">This opens the SMS dialog. The SMS dialog itself is a modal window.</td>
+	</tr>
+</table>
+
+<h3 class="auto-style2">Method Usage Example</h3>
+<p class="auto-style8">The below example shows how to use all of the methods. 
+For additional samples please see the example folder contained within the module 
+or <a href="https://github.com/benbahrenburg/benCoding.SMS/tree/master/example">
+here on Github</a>.</p>
+<div style="border-width: thin; border-style: solid; background-color: #E8E8E8;" class="auto-style9">
+	<p class="auto-style1"><strong>//Set the SMS BarColor<br />
+	sms.setBarColor(&#39;#336699&#39;);
+	</strong></p>
+	<p class="auto-style1"><strong>//Set the SMS message, you can also do this 
+	when you create the SMSDialog<br />
+	sms.setMessageBody(&quot;Appcelerator Titanium Rocks!&quot;);<br />
+	<br />
+	//Set the SMS ToRecipients, you can also do this when you create the 
+	SMSDialog<br />
+	//This is an array so you can pass in several numbers for the message to be 
+	sent to<br />
+	sms.setToRecipients([{&quot;555-555-5555&quot;},{&quot;444-444-4444&quot;}]);<br />
+	<br />
+	//This call opens the SMS Message Dialog window withe number and message you 
+	provided earlier<br />
+	sms.open({
+	<br />
+	&nbsp;&nbsp;&nbsp;
+	animated:true //Indicate if the dialog should be animated on open (OPTIONAL)
+	<br />
+	}); <br />
+	</strong></p>
+</div>
+
+<h2 class="auto-style1">Events</h2>
+<table style="width: 92%" class="auto-style2">
+	<tr>
+		<td style="width: 116px" class="auto-style6"><strong>Event Name</strong></td>
+		<td style="width: 296px" class="auto-style6"><strong>Description</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 116px"><strong>cancelled</strong></td>
+		<td class="auto-style7" style="width: 296px">This event is fired when 
+		the user presses the cancel button on the SMS Dialog</td>
+	</tr>	
+	<tr>
+		<td class="auto-style7" style="width: 116px"><strong>completed</strong></td>
+		<td class="auto-style7" style="width: 296px">This event is fired when an 
+		SMS message is sent successfully</td>
+	</tr>	
+	<tr>
+		<td class="auto-style7" style="width: 116px"><strong>errored</strong></td>
+		<td class="auto-style7" style="width: 296px">This event is fired when an 
+		error happens sending a message</td>
+	</tr>			
+	</table>
+<h3 class="auto-style2">Event Usage Example</h3>
+<p class="auto-style8">The below example shows how to use all of the events. 
+Please note the events will not become active until the <strong>open</strong> 
+method is called.</p>
+<p class="auto-style8">For additional samples please see the example folder contained within the module 
+or <a href="https://github.com/benbahrenburg/benCoding.SMS/tree/master/example">
+here on Github</a>.</p>
+<div style="border-width: thin; border-style: solid; background-color: #E8E8E8;" class="auto-style9">
+	<p class="auto-style1"><strong>var sms = 
+	require(&#39;bencoding.sms&#39;).createSMSDialog({ barColor:&#39;#336699&#39; });<br />
+	<br />
+	//If you want you can define some callbacks<br />
+	function messageCompleted(e){<br />
+&nbsp;&nbsp;&nbsp; alert(e.message); <br />
+	};<br />
+	function messageErrored(e){<br />
+&nbsp;&nbsp;&nbsp; alert(e.message); <br />
+	};<br />
+	<br />
+	function messageCancelled(e){<br />
+&nbsp;&nbsp;&nbsp; alert(e.message); <br />
+	};<br />
+	<br />
+	//Add the listeners so we know when an action happens<br />
+	sms.addEventListener(&#39;cancelled&#39;, messageCancelled);<br />
+	sms.addEventListener(&#39;completed&#39;, messageCompleted);<br />
+	sms.addEventListener(&#39;errored&#39;, messageErrored);</strong><br />
+	</p>
+</div>
+
+<h2 class="auto-style1">FAQ</h2>
+<table style="width: 92%" class="auto-style2">
+	<tr>
+		<td class="auto-style6" style="width: 279px"><strong>Question</strong></td>
+		<td class="auto-style6"><strong>Answer</strong></td>
+	</tr>
+	<tr>
+		<td style="width: 279px; height: 43px;" class="auto-style7">Can I 
+		automately send the SMS message without showing it to the user?</td>
+		<td class="auto-style7" style="height: 43px">No, this is not supported 
+		by Apple.</td>
+	</tr>
+	<tr>
+		<td style="width: 279px; height: 23px;" class="auto-style7">Can I send a 
+		MMS?</td>
+		<td class="auto-style7" style="height: 23px">No, the current Apple API 
+		does not allow for this.</td>
+	</tr>
+	<tr>
+		<td style="width: 279px; height: 23px;" class="auto-style7">Can I change 
+		the style of the dialog?</td>
+		<td class="auto-style7" style="height: 23px">You can update the barColor 
+		by setting the barColor property when creating the SMSDialog or by 
+		calling the setBarColor method before calling the open method.</td>
+	</tr>
+	<tr>
+		<td style="width: 279px; height: 23px;" class="auto-style7">Is there an 
+		Android version?</td>
+		<td class="auto-style7" style="height: 23px">You can do this using 
+		activities on Android without the need of a module.&nbsp; This module is an iOS only 
+		wrapper around the native
+<a href="https://developer.apple.com/library/ios/#documentation/MessageUI/Reference/MFMessageComposeViewController_class/Reference/Reference.html">
+MFMessageComposeViewController</a> component.&nbsp; </td>
+	</tr>
+</table>
+
+<h2 class="auto-style1">Licensing</h2>
+<p class="auto-style2">This project is licensed under the OSI 
+approved Apache Public License (version 2). For details please see the license 
+included with module.<br />
+<br />
+Developed by <a href="http://bahrenburgs.com">Ben Bahrenburg </a>on twitter
+<a href="http://twitter.com/bencoding">@benCoding</a></p>
+
+
+</body>
+
+</html>
