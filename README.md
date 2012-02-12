@@ -5,7 +5,6 @@ The benCoding.SMS module makes it easy to add SMS functionality into your iOS Ti
 <h2>Before you start</h2>
 * This is an iOS module designed to work with Titanium SDK 1.8.1 or greater.
 * Before using this module you first need to install the package. If you need instructions on how to install a 3rd party module please read this installation guide.
-* If you would like access to the source code, please visit us on Github at [https://github.com/benbahrenburg/benCoding.SMS](https://github.com/benbahrenburg/benCoding.SMS).
 
 <h2>Setup</h2>
 
