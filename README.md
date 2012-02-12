@@ -14,9 +14,7 @@ The benCoding.SMS module makes it easy to add SMS functionality into your iOS Ti
 * You can now use the module via the commonJS require method, example shown below.
 
 <pre><code>
-
 var sms = require('bencoding.sms').createSMSDialog();
-
 </code></pre>
 
 Now we have the module installed and avoid in our project we can start to use the components, see the feature guide below for details.
@@ -46,7 +44,6 @@ The bar color of the email dialog window when opened
 Below is a description and example on how to use each supported method.
 
 <pre><code>
-
 var sms = require('bencoding.SMS').createSMSDialog({
             barColor:'#336699', //set the SMS Dialog barColor
             messageBody:"Appcelerator Titanium Rocks!", //Set SMS Message
@@ -60,7 +57,6 @@ This property returns a boolean indicator on whether or not sending SMS Messages
 
 The below sample shows how you can check if this feature is supported.
 <pre><code>
-
 Ti.API.info("Can I send messages?");
 Ti.API.info("Is This Feature Supported? => " + sms.canSendText); 
 
