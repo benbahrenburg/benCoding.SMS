@@ -138,7 +138,6 @@ sms.addEventListener('cancelled', messageCancelled);
 sms.addEventListener('completed', messageCompleted);
 sms.addEventListener('errored', messageErrored);
 </code></pre>
-<hr />
 
 <h2>FAQ</h2>
 
