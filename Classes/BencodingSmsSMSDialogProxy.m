@@ -67,7 +67,7 @@
     //Grab the message
     NSString * message = [TiUtils stringValue:[self valueForUndefinedKey:@"messageBody"]];
     
-    smsController = [[[MFMessageComposeViewController alloc] init] autorelease];
+    smsController = [[MFMessageComposeViewController alloc] init];
     
     //See if we need to do anything with the barColor
     UIColor * barColor = [[TiUtils colorValue:[self valueForUndefinedKey:@"barColor"]] _color];
@@ -81,6 +81,8 @@
     smsController.recipients = toArray;    
     smsController.messageComposeDelegate = self;
       
+    [self retain];
+    
     //We call into core TiApp module this handles the controller magic for us        
     [[TiApp app] showModalController:smsController animated:showAnimated];        
     
@@ -91,9 +93,13 @@
 {
     NSString *eventName;
     NSString *msg;
+    BOOL animated = YES;
+    
     if(smsController !=nil)
     {
-        [[TiApp app] hideModalController:smsController animated:showAnimated];  
+        [[TiApp app] hideModalController:smsController animated:animated];  
+        [smsController autorelease];
+        smsController = nil;        
     }
     
     if (result == MessageComposeResultCancelled){
@@ -114,9 +120,11 @@
                                nil
                                ];
         
-        [self fireEvent:eventName withObject:event];
+        [self fireEvent:eventName withObject:event];      
     }   
-    
+
+    [self forgetSelf];
+    [self autorelease];  
 }
 
 
@@ -124,10 +132,10 @@
 {
 	// This method is called from the dealloc method and is good place to
 	// release any objects and memory that have been allocated for the proxy.	
-    if(smsController !=nil)
-    {
-        RELEASE_TO_NIL(smsController);     
-    }        
+//    if(smsController !=nil)
+//    {
+//        RELEASE_TO_NIL(smsController);     
+//    }        
     RELEASE_TO_NIL(canSendText);
     [super _destroy];
 }

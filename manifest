@@ -2,7 +2,7 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 1.0
+version: 1.2
 apiversion: 2
 description: benCoding.SMS
 author: benCoding.com
@@ -13,6 +13,6 @@ copyright: Copyright (c) 2012 by benCoding.Com
 # these should not be edited
 name: sms
 moduleid: bencoding.sms
-guid: 3da44764-ff07-4299-9a09-e3671743bfce
+guid: 243a68e8-2097-4867-a435-a01ce546ed1f
 platform: iphone
 minsdk: 1.8.1
