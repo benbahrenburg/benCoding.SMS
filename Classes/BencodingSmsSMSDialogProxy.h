@@ -6,7 +6,9 @@
  */
 #import <MessageUI/MFMessageComposeViewController.h>
 #import "TiProxy.h"
-
+@interface MFMessageComposeViewController (AutoRotation)
+// to stop auto rotation
+@end
 @interface BencodingSmsSMSDialogProxy : TiProxy<MFMessageComposeViewControllerDelegate> {
     MFMessageComposeViewController *smsController;
     NSNumber *canSendText;

@@ -8,6 +8,25 @@
 #import "BencodingSmsSMSDialogProxy.h"
 #import "TiUtils.h"
 #import "TiApp.h"
+
+@implementation MFMessageComposeViewController (AutoRotation)
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    //Check if the orientation is supported in the Tiapp.xml settings
+    BOOL allowRotate = [[[TiApp app] controller] shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    //If it is supported, we need to move the entire app. 
+    //Without doing this, our keyboard wont reposition itself
+    if(allowRotate==YES)
+    {
+        [[UIApplication sharedApplication] setStatusBarOrientation:interfaceOrientation animated:NO];
+    }
+    //We tell the app if we can rotate, ie is this a support orientation
+    return allowRotate;
+}
+
+@end
+
 @implementation BencodingSmsSMSDialogProxy
 
 @synthesize canSendText;
@@ -75,12 +94,12 @@
     {
         [[smsController navigationBar] setTintColor:barColor];
     }
-    
+        
     //Build the message contents
     smsController.body = message;        
     smsController.recipients = toArray;    
     smsController.messageComposeDelegate = self;
-      
+    
     [self retain];
     
     //We call into core TiApp module this handles the controller magic for us        
@@ -88,13 +107,14 @@
     
 }
 
+
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller 
                  didFinishWithResult:(MessageComposeResult)result
 {
     NSString *eventName;
     NSString *msg;
     BOOL animated = YES;
-    
+        
     if(smsController !=nil)
     {
         [[TiApp app] hideModalController:smsController animated:animated];  
