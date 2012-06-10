@@ -164,6 +164,7 @@ BOOL statusBarHiddenOldValue = NO;
     {
         //We need to hide the statusbar for the full app
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        [[[TiApp app] controller] resizeViewForStatusBarHidden:YES];
     }
     
 }
@@ -209,7 +210,8 @@ BOOL statusBarHiddenOldValue = NO;
     {
         statusBarHiddenCheck=NO; //Reset our flag here
         //We set the statusbar value to what it was before we started
-        [[UIApplication sharedApplication] setStatusBarHidden:statusBarHiddenOldValue];   
+        [[UIApplication sharedApplication] setStatusBarHidden:statusBarHiddenOldValue];  
+        [[[TiApp app] controller] resizeViewForStatusBarHidden:statusBarHiddenOldValue];
     }
     
     [self forgetSelf];
