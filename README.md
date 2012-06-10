@@ -110,7 +110,8 @@ sms.setToRecipients([{"555-555-5555"},{"444-444-4444"}]);
 
 //This call opens the SMS Message Dialog window withe number and message you provided earlier
 sms.open({ 
-    animated:true //Indicate if the dialog should be animated on open (OPTIONAL) 
+    animated:true, //Indicate if the dialog should be animated on open (OPTIONAL) 
+    portraitOnly:true //Indicate if we lock the dialog into the portrait orientation only (OPTIONAL)
 }); 	
 </code></pre>
 
@@ -151,6 +152,11 @@ sms.addEventListener('errored', messageErrored);
 </code></pre>
 
 <h2>FAQ</h2>
+
+<h3>How does module orientation work?</h3>
+We use the orientation from your tiapp.xml file. Depending on how your project is structured this can cause repainting issues. In these cases it is recommended to fix your orientation either in your tiapp.xml file or by providing the portraitOnly on open.
+
+If you want to lock into portrait only you can do so by adding the portraitOnly parameter to the open method.
 
 <h3>Can I automately send the SMS message without showing it to the user?</h3>
 No, this is not supported by Apple.

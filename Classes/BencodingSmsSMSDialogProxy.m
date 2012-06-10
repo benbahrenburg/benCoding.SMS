@@ -9,20 +9,29 @@
 #import "TiUtils.h"
 #import "TiApp.h"
 
+BOOL lockPortrait = NO;
+
 @implementation MFMessageComposeViewController (AutoRotation)
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    //Check if the orientation is supported in the Tiapp.xml settings
-    BOOL allowRotate = [[[TiApp app] controller] shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-    //If it is supported, we need to move the entire app. 
-    //Without doing this, our keyboard wont reposition itself
-    if(allowRotate==YES)
+    if(lockPortrait==YES)
     {
-        [[UIApplication sharedApplication] setStatusBarOrientation:interfaceOrientation animated:NO];
+        return NO;
     }
-    //We tell the app if we can rotate, ie is this a support orientation
-    return allowRotate;
+    else
+    {
+        //Check if the orientation is supported in the Tiapp.xml settings
+        BOOL allowRotate = [[[TiApp app] controller] shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+        //If it is supported, we need to move the entire app. 
+        //Without doing this, our keyboard wont reposition itself
+        if(allowRotate==YES)
+        {
+            [[UIApplication sharedApplication] setStatusBarOrientation:interfaceOrientation animated:NO];
+        }
+        //We tell the app if we can rotate, ie is this a support orientation
+        return allowRotate;        
+    }
 }
 
 @end
@@ -74,6 +83,7 @@
         //Get the user's animated option if provided
         ENSURE_SINGLE_ARG(args,NSDictionary);
         showAnimated = [TiUtils boolValue:@"animated" properties:args def:YES];
+        lockPortrait= [TiUtils boolValue:@"portraitOnly" properties:args def:NO];
     }
     
 	Class arrayClass = [NSArray class];
@@ -149,13 +159,7 @@
 
 
 -(void)_destroy
-{
-	// This method is called from the dealloc method and is good place to
-	// release any objects and memory that have been allocated for the proxy.	
-//    if(smsController !=nil)
-//    {
-//        RELEASE_TO_NIL(smsController);     
-//    }        
+{       
     RELEASE_TO_NIL(canSendText);
     [super _destroy];
 }

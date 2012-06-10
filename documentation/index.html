@@ -203,7 +203,12 @@ here on Github</a>.</p>
 	sms.open({
 	<br />
 	&nbsp;&nbsp;&nbsp;
-	animated:true //Indicate if the dialog should be animated on open (OPTIONAL)
+	animated:true, //Indicate if the dialog should be animated on open (OPTIONAL)
+	<br />
+	&nbsp;&nbsp;&nbsp;
+	portraitOnly:true //Indicate if we lock the dialog into the portrait orientation only (OPTIONAL)
+	</strong></p>
+	<p class="auto-style1"><strong>
 	<br />
 	}); <br />
 	</strong></p>
@@ -266,6 +271,19 @@ here on Github</a>.</p>
 	<tr>
 		<td class="auto-style6" style="width: 279px"><strong>Question</strong></td>
 		<td class="auto-style6"><strong>Answer</strong></td>
+	</tr>
+	<tr>
+		<td style="width: 279px; height: 43px;" class="auto-style7">How does 
+		orientation work?</td>
+		<td class="auto-style7" style="height: 43px">We use the orientation from 
+		your tiapp.xml file. Depending on how your project is structured this 
+		can cause repainting issues. In these cases it is recommended to fix 
+		your orientation either in your tiapp.xml file or by providing the 
+		portraitOnly on open.<br />
+		<br />
+		If you want to lock into portrait only you can do so by adding the 
+		portraitOnly parameter to the open method.<br />
+		</td>
 	</tr>
 	<tr>
 		<td style="width: 279px; height: 43px;" class="auto-style7">Can I 

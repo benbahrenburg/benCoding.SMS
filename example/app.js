@@ -168,7 +168,8 @@ testButton.addEventListener('click', function(){
 	
 	//This call opens the SMS Message Dialog window withe number and message you provided earlier
 	sms.open({
-			animated:true //Indicate if the dialog should be animated on open (OPTIONAL)	
+			animated:true //Indicate if the dialog should be animated on open (OPTIONAL)
+			//portraitOnly:true //Indicate if we lock the dialog into the portrait orientation only (OPTIONAL)	
 	});
 });
 win.open();
