@@ -10,6 +10,8 @@
 #import "TiApp.h"
 
 BOOL lockPortrait = NO;
+BOOL statusBarHiddenCheck = NO;
+BOOL statusBarHiddenOldValue = NO;
 
 @implementation MFMessageComposeViewController (AutoRotation)
 
@@ -44,8 +46,21 @@ BOOL lockPortrait = NO;
     if (self = [super init])
     {
         showAnimated=YES;
+        BOOL deviceCanSend = YES;
+        Class messageClass = (NSClassFromString(@"MFMessageComposeViewController"));
+        if (messageClass == nil)
+        {
+            deviceCanSend=NO;
+        }else
+        {
+            //Check if we have support
+            if([MFMessageComposeViewController canSendText]==NO)
+            {
+                deviceCanSend=NO;
+            }        
+        }        
         //Set a property so that we know if we can send a text message
-        canSendText=NUMBOOL([MFMessageComposeViewController canSendText]);
+        canSendText=NUMBOOL(deviceCanSend);
     
     }
     
@@ -56,8 +71,23 @@ BOOL lockPortrait = NO;
 -(void)open:(id)args
 {    
     showAnimated=YES; //Force reset in case dev wants to toggle
+    BOOL deviceCanSend = YES;
     
-    if([MFMessageComposeViewController canSendText]==NO)
+    //Check the message class exists
+    Class messageClass = (NSClassFromString(@"MFMessageComposeViewController"));
+    if (messageClass == nil)
+    {
+        deviceCanSend=NO;
+    }else
+    {
+        //Check if we have support
+        if([MFMessageComposeViewController canSendText]==NO)
+        {
+            deviceCanSend=NO;
+        }        
+    }
+
+    if(deviceCanSend==NO)
     {
         if ([self _hasListeners:@"errored"]) {
             NSDictionary *errorEvent = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -69,7 +99,6 @@ BOOL lockPortrait = NO;
         }         
         return;
     }
-    
 	//We need to do a few checks here to figure out what to do
     //This check is due to some side effects
     if((args ==nil)||([args count] == 0))
@@ -97,23 +126,45 @@ BOOL lockPortrait = NO;
     NSString * message = [TiUtils stringValue:[self valueForUndefinedKey:@"messageBody"]];
     
     smsController = [[MFMessageComposeViewController alloc] init];
+
+    //Check if we need to hide the statusbar
+    BOOL statusBarHidden = [TiUtils boolValue:[self valueForUndefinedKey:@"statusBarHidden"] def:NO];
     
+    //Set our status flag
+    statusBarHiddenCheck=statusBarHidden;
+    
+    //If we are hiding the statusbar we perform the below
+    if(statusBarHidden==YES)
+    {
+        //Set our dialog to full screen 
+        smsController.wantsFullScreenLayout = NO;  
+        //Get the existing statusbar value so we can reset it later on
+        statusBarHiddenOldValue = [UIApplication sharedApplication].statusBarHidden;
+    }
+
     //See if we need to do anything with the barColor
     UIColor * barColor = [[TiUtils colorValue:[self valueForUndefinedKey:@"barColor"]] _color];
     if (barColor != nil)
     {
-        [[smsController navigationBar] setTintColor:barColor];
+        [[smsController navigationBar] setTintColor:barColor]; 
     }
-        
+
     //Build the message contents
     smsController.body = message;        
     smsController.recipients = toArray;    
     smsController.messageComposeDelegate = self;
-    
+        
     [self retain];
     
     //We call into core TiApp module this handles the controller magic for us        
-    [[TiApp app] showModalController:smsController animated:showAnimated];        
+    [[TiApp app] showModalController:smsController animated:showAnimated]; 
+    
+    //If we are hiding the statusbar we need to do it after it is presented
+    if(statusBarHidden==YES)
+    {
+        //We need to hide the statusbar for the full app
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
     
 }
 
@@ -153,6 +204,14 @@ BOOL lockPortrait = NO;
         [self fireEvent:eventName withObject:event];      
     }   
 
+    //If we enabled full screen, we need to set it back 
+    if(statusBarHiddenCheck==YES)
+    {
+        statusBarHiddenCheck=NO; //Reset our flag here
+        //We set the statusbar value to what it was before we started
+        [[UIApplication sharedApplication] setStatusBarHidden:statusBarHiddenOldValue];   
+    }
+    
     [self forgetSelf];
     [self autorelease];  
 }
