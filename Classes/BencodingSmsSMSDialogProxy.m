@@ -70,6 +70,8 @@ BOOL statusBarHiddenOldValue = NO;
 
 -(void)open:(id)args
 {    
+    [self rememberSelf];
+    
     showAnimated=YES; //Force reset in case dev wants to toggle
     BOOL deviceCanSend = YES;
     
@@ -196,15 +198,7 @@ BOOL statusBarHiddenOldValue = NO;
         msg=@"Error sending message";
     }
     
-    if ([self _hasListeners:eventName]) {
-        NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
-                               msg,@"message",
-                               nil
-                               ];
-        
-        [self fireEvent:eventName withObject:event];      
-    }   
-
+ 
     //If we enabled full screen, we need to set it back 
     if(statusBarHiddenCheck==YES)
     {
@@ -213,6 +207,15 @@ BOOL statusBarHiddenOldValue = NO;
         [[UIApplication sharedApplication] setStatusBarHidden:statusBarHiddenOldValue];  
         [[[TiApp app] controller] resizeViewForStatusBarHidden:statusBarHiddenOldValue];
     }
+ 
+    if ([self _hasListeners:eventName]) {
+        NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
+                               msg,@"message",
+                               nil
+                               ];
+        
+        [self fireEvent:eventName withObject:event];      
+    }  
     
     [self forgetSelf];
     [self autorelease];  
