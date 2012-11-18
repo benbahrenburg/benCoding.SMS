@@ -19,3 +19,4 @@ project.xcworkspace
 *.swp
 *.out
 project.xcworkspace/
+.project

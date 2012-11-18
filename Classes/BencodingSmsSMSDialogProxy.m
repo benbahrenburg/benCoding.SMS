@@ -1,6 +1,6 @@
 /**
  * benCoding.SMS Project
- * Copyright (c) 2009-2012 by Ben Bahrenburg. All Rights Reserved.
+ * Copyright (c) 2012-2014 by Ben Bahrenburg. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
@@ -68,6 +68,14 @@ BOOL statusBarHiddenOldValue = NO;
 }
 
 
+-(void)forceDispose:(id)unused
+{
+    RELEASE_TO_NIL(canSendText);
+    if(smsController!=nil)
+    {
+        RELEASE_TO_NIL(smsController);
+    }
+}
 -(void)open:(id)args
 {    
     [self rememberSelf];
@@ -166,7 +174,7 @@ BOOL statusBarHiddenOldValue = NO;
     {
         //We need to hide the statusbar for the full app
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
-        [[[TiApp app] controller] resizeViewForStatusBarHidden:YES];
+        //[[[TiApp app] controller] resizeViewForStatusBarHidden:YES];
     }
     
 }
@@ -205,7 +213,7 @@ BOOL statusBarHiddenOldValue = NO;
         statusBarHiddenCheck=NO; //Reset our flag here
         //We set the statusbar value to what it was before we started
         [[UIApplication sharedApplication] setStatusBarHidden:statusBarHiddenOldValue];  
-        [[[TiApp app] controller] resizeViewForStatusBarHidden:statusBarHiddenOldValue];
+        //[[[TiApp app] controller] resizeViewForStatusBarHidden:statusBarHiddenOldValue];
     }
  
     if ([self _hasListeners:eventName]) {
@@ -224,7 +232,7 @@ BOOL statusBarHiddenOldValue = NO;
 
 -(void)_destroy
 {       
-    RELEASE_TO_NIL(canSendText);
+    [self forceDispose:nil];
     [super _destroy];
 }
 

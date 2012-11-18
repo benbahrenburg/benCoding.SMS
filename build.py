@@ -60,10 +60,7 @@ def generate_doc(config):
 	sdk = find_sdk(config)
 	support_dir = os.path.join(sdk,'module','support')
 	sys.path.append(support_dir)
-	try:
-		import markdown2 as markdown
-	except ImportError:
-		import markdown
+
 	documentation = []
 	for file in os.listdir(docdir):
 		if file in ignoreFiles or os.path.isdir(os.path.join(docdir, file)):
@@ -218,4 +215,3 @@ if __name__ == '__main__':
 	build_module(manifest,config)
 	package_module(manifest,mf,config)
 	sys.exit(0)
-
