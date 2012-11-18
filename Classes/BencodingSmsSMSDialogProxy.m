@@ -67,6 +67,18 @@ BOOL statusBarHiddenOldValue = NO;
     return self;  
 }
 
+-(void) resetFlags
+{
+    lockPortrait = NO;
+    statusBarHiddenCheck = NO;
+    statusBarHiddenOldValue = NO;
+}
+-(void)forceDispose:(id)unused
+{
+    RELEASE_TO_NIL(canSendText);
+    RELEASE_TO_NIL(smsController);
+}
+
 -(void)_destroy
 {
     [self forceDispose:nil];
@@ -79,20 +91,7 @@ BOOL statusBarHiddenOldValue = NO;
 	[super dealloc];
 }
 
--(void) resetFlags
-{
-    lockPortrait = NO;
-    statusBarHiddenCheck = NO;
-    statusBarHiddenOldValue = NO;
-}
--(void)forceDispose:(id)unused
-{
-    RELEASE_TO_NIL(canSendText);
-    if(smsController!=nil)
-    {
-        RELEASE_TO_NIL(smsController);
-    }
-}
+
 -(void)open:(id)args
 {
     showAnimated=YES; //Force reset in case dev wants to toggle
