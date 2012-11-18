@@ -2,12 +2,17 @@
 
 The benCoding.SMS module makes it easy to add SMS functionality into your iOS Titanium apps. We unleash the power of Apple's native Apple SMS component [MFMessageComposeViewController](https://developer.apple.com/library/ios/#documentation/MessageUI/Reference/MFMessageComposeViewController_class/Reference/Reference.html) to Titanium with an API fashioned after the Titanium EmailDialog to make it familiar to use.
 
-<h2>Before you start</h2>
-* This is an iOS module designed to work with Titanium SDK 1.8.2 or greater.
+<h2>Please Read Before Using</h2>
+
+<h3>Limitation</h3>
+The SMS.Dialog module can only be tested on the device itself.  This is an Apple Simulator limitation and not a module feature.
+
+<h3>Before you start</h3>
+* This is an iOS module designed to work with Titanium SDK 1.8.2.
 * Before using this module you first need to install the package. If you need instructions on how to install a 3rd party module please read this installation guide.
 
-<h2>If you are running iOS 6 - Please read</h2>
-If you are building for iOS 6 using Xcode 4.5 or greater you need to use SMS.Dialog 1.8 or greater.
+<h3>If you are running iOS 6 - Please read</h3>
+If you are building for iOS 6 using Xcode 4.5 or greater you need to use SMS.Dialog 1.8 or greater. This version of the SMS.Dialog requires using the 2.1.4GA Titanium SDK.
 
 <h2>Download the release</h2>
 
