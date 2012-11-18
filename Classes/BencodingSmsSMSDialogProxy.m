@@ -67,7 +67,24 @@ BOOL statusBarHiddenOldValue = NO;
     return self;  
 }
 
+-(void)_destroy
+{
+    [self forceDispose:nil];
+    [super _destroy];
+}
 
+- (void) dealloc
+{
+	[self forceDispose:nil];
+	[super dealloc];
+}
+
+-(void) resetFlags
+{
+    lockPortrait = NO;
+    statusBarHiddenCheck = NO;
+    statusBarHiddenOldValue = NO;
+}
 -(void)forceDispose:(id)unused
 {
     RELEASE_TO_NIL(canSendText);
@@ -77,11 +94,14 @@ BOOL statusBarHiddenOldValue = NO;
     }
 }
 -(void)open:(id)args
-{    
-    [self rememberSelf];
-    
+{
     showAnimated=YES; //Force reset in case dev wants to toggle
     BOOL deviceCanSend = YES;
+    
+    //Remember JS object to avoid GC
+    [self rememberSelf];
+    //Reset our flags in case we are calling many times with different values
+    [self resetFlags];
     
     //Check the message class exists
     Class messageClass = (NSClassFromString(@"MFMessageComposeViewController"));
@@ -109,6 +129,7 @@ BOOL statusBarHiddenOldValue = NO;
         }         
         return;
     }
+    
 	//We need to do a few checks here to figure out what to do
     //This check is due to some side effects
     if((args ==nil)||([args count] == 0))
@@ -140,9 +161,6 @@ BOOL statusBarHiddenOldValue = NO;
     //Check if we need to hide the statusbar
     BOOL statusBarHidden = [TiUtils boolValue:[self valueForUndefinedKey:@"statusBarHidden"] def:NO];
     
-    //Set our status flag
-    statusBarHiddenCheck=statusBarHidden;
-    
     //If we are hiding the statusbar we perform the below
     if(statusBarHidden==YES)
     {
@@ -150,6 +168,8 @@ BOOL statusBarHiddenOldValue = NO;
         smsController.wantsFullScreenLayout = NO;  
         //Get the existing statusbar value so we can reset it later on
         statusBarHiddenOldValue = [UIApplication sharedApplication].statusBarHidden;
+        //Set our status flag
+        statusBarHiddenCheck =  YES;
     }
 
     //See if we need to do anything with the barColor
@@ -163,11 +183,6 @@ BOOL statusBarHiddenOldValue = NO;
     smsController.body = message;        
     smsController.recipients = toArray;    
     smsController.messageComposeDelegate = self;
-        
-    [self retain];
-    
-    //We call into core TiApp module this handles the controller magic for us        
-    [[TiApp app] showModalController:smsController animated:showAnimated]; 
     
     //If we are hiding the statusbar we need to do it after it is presented
     if(statusBarHidden==YES)
@@ -177,31 +192,34 @@ BOOL statusBarHiddenOldValue = NO;
         //[[[TiApp app] controller] resizeViewForStatusBarHidden:YES];
     }
     
+    [self retain];
+    
+    //We call into core TiApp module this handles the controller magic for us        
+    [[TiApp app] showModalController:smsController animated:showAnimated]; 
+    
+    
 }
 
-
+#pragma mark Delegate 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller 
                  didFinishWithResult:(MessageComposeResult)result
 {
     NSString *eventName;
     NSString *msg;
-    BOOL animated = YES;
-        
-    if(smsController !=nil)
-    {
-        [[TiApp app] hideModalController:smsController animated:animated];  
-        [smsController autorelease];
-        smsController = nil;        
-    }
     
-    if (result == MessageComposeResultCancelled){
+    if (result == MessageComposeResultCancelled)
+    {
         eventName=@"cancelled";
         msg=@"Message was cancelled";
         
-    }else if (result == MessageComposeResultSent){
+    }
+    else if (result == MessageComposeResultSent)
+    {
         eventName=@"completed";  
         msg=@"Message sent successfully";
-    }else{
+    }
+    else
+    {
         eventName=@"errored";
         msg=@"Error sending message";
     }
@@ -216,6 +234,11 @@ BOOL statusBarHiddenOldValue = NO;
         //[[[TiApp app] controller] resizeViewForStatusBarHidden:statusBarHiddenOldValue];
     }
  
+    BOOL animated = YES;
+    [[TiApp app] hideModalController:smsController animated:animated];
+    [smsController autorelease];
+    smsController = nil;
+    
     if ([self _hasListeners:eventName]) {
         NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
                                msg,@"message",
@@ -229,11 +252,5 @@ BOOL statusBarHiddenOldValue = NO;
     [self autorelease];  
 }
 
-
--(void)_destroy
-{       
-    [self forceDispose:nil];
-    [super _destroy];
-}
-
 @end
+
