@@ -4,8 +4,9 @@ The benCoding.SMS module makes it easy to add SMS functionality into your iOS Ti
 
 <h2>Please Read Before Using</h2>
 
-<h3>Limitation</h3>
-The SMS.Dialog module can only be tested on the device itself.  This is an Apple Simulator limitation and not a module feature.
+<h3>Limitations</h3>
+* The SMS.Dialog module can only be tested on the device itself.  This is an Apple Simulator limitation and not a module feature.
+* If you are using iOS 6 or a Titanium SDK greater then 1.8.2 please read the iOS 6 section below.
 
 <h3>Before you start</h3>
 * This is an iOS module designed to work with Titanium SDK 1.8.2.
