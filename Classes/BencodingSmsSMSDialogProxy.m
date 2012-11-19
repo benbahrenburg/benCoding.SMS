@@ -228,8 +228,7 @@ BOOL statusBarHiddenOldValue = NO;
  
     BOOL animated = YES;
     [[TiApp app] hideModalController:smsComposer animated:animated];
-    [smsComposer autorelease];
-    smsComposer = nil;
+
     
     if ([self _hasListeners:eventName]) {
         NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -239,6 +238,19 @@ BOOL statusBarHiddenOldValue = NO;
         
         [self fireEvent:eventName withObject:event];      
     }  
+    
+
+    if ([smsComposer respondsToSelector:@selector(presentingViewController)])
+    {
+        [smsComposer dismissViewControllerAnimated:animated completion:nil];
+    }
+    else
+    {
+        [smsComposer dismissModalViewControllerAnimated:animated];
+    }
+    
+    [smsComposer autorelease];
+    smsComposer = nil;
     
     [self forgetSelf];
     [self autorelease];
