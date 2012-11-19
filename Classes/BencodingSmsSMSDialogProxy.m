@@ -73,21 +73,15 @@ BOOL statusBarHiddenOldValue = NO;
     statusBarHiddenCheck = NO;
     statusBarHiddenOldValue = NO;
 }
--(void)forceDispose:(id)unused
-{
-    RELEASE_TO_NIL(canSendText);
-    RELEASE_TO_NIL(smsController);
-}
+
 
 -(void)_destroy
 {
-    [self forceDispose:nil];
     [super _destroy];
 }
 
 - (void) dealloc
 {
-	[self forceDispose:nil];
 	[super dealloc];
 }
 
@@ -155,8 +149,12 @@ BOOL statusBarHiddenOldValue = NO;
     //Grab the message
     NSString * message = [TiUtils stringValue:[self valueForUndefinedKey:@"messageBody"]];
     
-    smsController = [[MFMessageComposeViewController alloc] init];
-
+    MFMessageComposeViewController * smsComposer = [[MFMessageComposeViewController alloc] init];
+    [smsComposer setMessageComposeDelegate:self];
+    //Build the message contents
+    smsComposer.body = message;
+    smsComposer.recipients = toArray;
+    
     //Check if we need to hide the statusbar
     BOOL statusBarHidden = [TiUtils boolValue:[self valueForUndefinedKey:@"statusBarHidden"] def:NO];
     
@@ -164,7 +162,7 @@ BOOL statusBarHiddenOldValue = NO;
     if(statusBarHidden==YES)
     {
         //Set our dialog to full screen 
-        smsController.wantsFullScreenLayout = NO;  
+        smsComposer.wantsFullScreenLayout = NO;  
         //Get the existing statusbar value so we can reset it later on
         statusBarHiddenOldValue = [UIApplication sharedApplication].statusBarHidden;
         //Set our status flag
@@ -175,14 +173,10 @@ BOOL statusBarHiddenOldValue = NO;
     UIColor * barColor = [[TiUtils colorValue:[self valueForUndefinedKey:@"barColor"]] _color];
     if (barColor != nil)
     {
-        [[smsController navigationBar] setTintColor:barColor]; 
+        [[smsComposer navigationBar] setTintColor:barColor]; 
     }
 
-    //Build the message contents
-    smsController.body = message;        
-    smsController.recipients = toArray;    
-    smsController.messageComposeDelegate = self;
-    
+
     //If we are hiding the statusbar we need to do it after it is presented
     if(statusBarHidden==YES)
     {
@@ -194,13 +188,12 @@ BOOL statusBarHiddenOldValue = NO;
     [self retain];
     
     //We call into core TiApp module this handles the controller magic for us        
-    [[TiApp app] showModalController:smsController animated:showAnimated]; 
-    
+    [[TiApp app] showModalController:smsComposer animated:showAnimated]; 
     
 }
 
 #pragma mark Delegate 
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller 
+- (void)messageComposeViewController:(MFMessageComposeViewController *)smsComposer
                  didFinishWithResult:(MessageComposeResult)result
 {
     NSString *eventName;
@@ -234,9 +227,9 @@ BOOL statusBarHiddenOldValue = NO;
     }
  
     BOOL animated = YES;
-    [[TiApp app] hideModalController:smsController animated:animated];
-    [smsController release];
-    smsController = nil;
+    [[TiApp app] hideModalController:smsComposer animated:animated];
+    [smsComposer autorelease];
+    smsComposer = nil;
     
     if ([self _hasListeners:eventName]) {
         NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -248,7 +241,7 @@ BOOL statusBarHiddenOldValue = NO;
     }  
     
     [self forgetSelf];
-    [self release];
+    [self autorelease];
 }
 
 @end

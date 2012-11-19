@@ -10,7 +10,6 @@
 // to stop auto rotation
 @end
 @interface BencodingSmsSMSDialogProxy : TiProxy<MFMessageComposeViewControllerDelegate> {
-    MFMessageComposeViewController *smsController;
     NSNumber *canSendText;
     BOOL showAnimated;
 }
