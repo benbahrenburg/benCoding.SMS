@@ -235,7 +235,7 @@ BOOL statusBarHiddenOldValue = NO;
  
     BOOL animated = YES;
     [[TiApp app] hideModalController:smsController animated:animated];
-    [smsController autorelease];
+    [smsController release];
     smsController = nil;
     
     if ([self _hasListeners:eventName]) {
@@ -248,7 +248,7 @@ BOOL statusBarHiddenOldValue = NO;
     }  
     
     [self forgetSelf];
-    [self autorelease];  
+    [self release];
 }
 
 @end
