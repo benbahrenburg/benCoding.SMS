@@ -91,8 +91,6 @@ BOOL statusBarHiddenOldValue = NO;
     showAnimated=YES; //Force reset in case dev wants to toggle
     BOOL deviceCanSend = YES;
     
-    //Remember JS object to avoid GC
-    [self rememberSelf];
     //Reset our flags in case we are calling many times with different values
     [self resetFlags];
     
@@ -103,11 +101,14 @@ BOOL statusBarHiddenOldValue = NO;
         deviceCanSend=NO;
     }else
     {
+        messageClass=nil;
+        
         //Check if we have support
         if([MFMessageComposeViewController canSendText]==NO)
         {
             deviceCanSend=NO;
-        }        
+        }
+    
     }
 
     if(deviceCanSend==NO)
@@ -188,7 +189,7 @@ BOOL statusBarHiddenOldValue = NO;
     [self retain];
     
     //We call into core TiApp module this handles the controller magic for us        
-    [[TiApp app] showModalController:smsComposer animated:showAnimated]; 
+    [[TiApp app] showModalController:smsComposer animated:showAnimated];
     
 }
 
@@ -196,8 +197,24 @@ BOOL statusBarHiddenOldValue = NO;
 - (void)messageComposeViewController:(MFMessageComposeViewController *)smsComposer
                  didFinishWithResult:(MessageComposeResult)result
 {
+    BOOL animated = YES;
     NSString *eventName;
     NSString *msg;
+
+    //If we enabled full screen, we need to set it back
+    if(statusBarHiddenCheck==YES)
+    {
+        statusBarHiddenCheck=NO; //Reset our flag here
+        //We set the statusbar value to what it was before we started
+        [[UIApplication sharedApplication] setStatusBarHidden:statusBarHiddenOldValue];
+        //[[[TiApp app] controller] resizeViewForStatusBarHidden:statusBarHiddenOldValue];
+    }
+    
+    //hide the dialog window (with animation)
+	[[TiApp app] hideModalController:smsComposer animated:animated];
+	[smsComposer autorelease];
+	smsComposer = nil;
+
     
     if (result == MessageComposeResultCancelled)
     {
@@ -216,19 +233,6 @@ BOOL statusBarHiddenOldValue = NO;
         msg=@"Error sending message";
     }
     
- 
-    //If we enabled full screen, we need to set it back 
-    if(statusBarHiddenCheck==YES)
-    {
-        statusBarHiddenCheck=NO; //Reset our flag here
-        //We set the statusbar value to what it was before we started
-        [[UIApplication sharedApplication] setStatusBarHidden:statusBarHiddenOldValue];  
-        //[[[TiApp app] controller] resizeViewForStatusBarHidden:statusBarHiddenOldValue];
-    }
- 
-    BOOL animated = YES;
-    [[TiApp app] hideModalController:smsComposer animated:animated];
-
     
     if ([self _hasListeners:eventName]) {
         NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -240,20 +244,9 @@ BOOL statusBarHiddenOldValue = NO;
     }  
     
 
-    if ([smsComposer respondsToSelector:@selector(presentingViewController)])
-    {
-        [smsComposer dismissViewControllerAnimated:animated completion:nil];
-    }
-    else
-    {
-        [smsComposer dismissModalViewControllerAnimated:animated];
-    }
+    [smsComposer dismissModalViewControllerAnimated:YES];
     
-    [smsComposer autorelease];
-    smsComposer = nil;
-    
-    [self forgetSelf];
-    [self autorelease];
+	[self release];
 }
 
 @end
