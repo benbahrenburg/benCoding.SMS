@@ -207,7 +207,6 @@ BOOL statusBarHiddenOldValue = NO;
         statusBarHiddenCheck=NO; //Reset our flag here
         //We set the statusbar value to what it was before we started
         [[UIApplication sharedApplication] setStatusBarHidden:statusBarHiddenOldValue];
-        //[[[TiApp app] controller] resizeViewForStatusBarHidden:statusBarHiddenOldValue];
     }
     
     //hide the dialog window (with animation)
@@ -234,7 +233,8 @@ BOOL statusBarHiddenOldValue = NO;
     }
     
     
-    if ([self _hasListeners:eventName]) {
+    if ([self _hasListeners:eventName])
+    {
         NSDictionary *event = [NSDictionary dictionaryWithObjectsAndKeys:
                                msg,@"message",
                                nil
@@ -242,9 +242,15 @@ BOOL statusBarHiddenOldValue = NO;
         
         [self fireEvent:eventName withObject:event];      
     }  
-    
 
-    [smsComposer dismissModalViewControllerAnimated:YES];
+    if ([smsComposer respondsToSelector:@selector(dismissModalViewControllerAnimated:YES)])
+    {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [smsComposer dismissModalViewControllerAnimated:YES];
+#pragma clang diagnostic pop        
+    }
+
     
 	[self release];
 }
