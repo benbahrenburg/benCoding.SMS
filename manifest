@@ -13,6 +13,6 @@ copyright: Copyright (c) 2012 by benCoding.Com
 # these should not be edited
 name: sms
 moduleid: bencoding.sms
-guid: 3da44764-ff07-4299-9a09-e3671743bfce
+guid: dbf59987-eccb-4069-8a9c-39cb71baf5ca
 platform: iphone
 minsdk: 2.1.4

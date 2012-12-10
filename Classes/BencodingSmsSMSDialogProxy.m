@@ -243,14 +243,14 @@ BOOL statusBarHiddenOldValue = NO;
         [self fireEvent:eventName withObject:event];      
     }  
 
-    if ([smsComposer respondsToSelector:@selector(dismissModalViewControllerAnimated:YES)])
-    {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        [smsComposer dismissModalViewControllerAnimated:YES];
-#pragma clang diagnostic pop        
-    }
+    if ([smsComposer respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
+    {
 
+        [smsComposer dismissModalViewControllerAnimated:YES];
+    }
+#pragma clang diagnostic pop
     
 	[self release];
 }
