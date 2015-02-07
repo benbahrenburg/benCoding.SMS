@@ -80,10 +80,6 @@ BOOL statusBarHiddenOldValue = NO;
     [super _destroy];
 }
 
-- (void) dealloc
-{
-	[super dealloc];
-}
 
 
 -(void)open:(id)args
@@ -186,7 +182,6 @@ BOOL statusBarHiddenOldValue = NO;
         //[[[TiApp app] controller] resizeViewForStatusBarHidden:YES];
     }
     
-    [self retain];
     
     //We call into core TiApp module this handles the controller magic for us        
     [[TiApp app] showModalController:smsComposer animated:showAnimated];
@@ -244,7 +239,6 @@ BOOL statusBarHiddenOldValue = NO;
     }  
 
     
-	[self release];
 }
 
 @end
