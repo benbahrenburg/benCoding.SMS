@@ -211,8 +211,8 @@ BOOL statusBarHiddenOldValue = NO;
     
     //hide the dialog window (with animation)
 	[[TiApp app] hideModalController:smsComposer animated:animated];
-	[smsComposer autorelease];
-	smsComposer = nil;
+	//[smsComposer autorelease];
+	//smsComposer = nil;
 
     
     if (result == MessageComposeResultCancelled)
@@ -243,14 +243,6 @@ BOOL statusBarHiddenOldValue = NO;
         [self fireEvent:eventName withObject:event];      
     }  
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    if ([smsComposer respondsToSelector:@selector(dismissModalViewControllerAnimated:)])
-    {
-
-        [smsComposer dismissModalViewControllerAnimated:YES];
-    }
-#pragma clang diagnostic pop
     
 	[self release];
 }
